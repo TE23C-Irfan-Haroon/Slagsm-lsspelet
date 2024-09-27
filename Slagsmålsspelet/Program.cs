@@ -20,19 +20,35 @@ Console.WriteLine("Choose between 1,2 or 3");
 
 string player2 = Console.ReadLine().ToLower();
 
-if (player2 == "a")
+if (player2 == "1")
+{
+    player2 = "Mario";
+}
+else if (player2 == "2")
+{
+    player2 = "Ironman";
+    enemyMaxDamage = 20;
+}
+else if (player2 == "3")
 {
     player2 = "Kratos";
     enemyMaxDamage = 40;
 }
-else if (player2 == "b")
+// if (player2 != "1" &&  player2 != "2" && player2 != "3")
+// {
+//     Console.WriteLine("Choose between 1,2 or 3");
+// }
 
+while (player2 != "1" && player2 != "2" && player2 != "3")
 {
-    player2 = "Scooby doo";
-}
-else if (player2 == "c")
-{
-    player2 = "Ironman";
+    Console.WriteLine("Chose between 1, 2 Or 3");
+    player2 = Console.ReadLine();
+
+    if (player2 != "1" && player2 != "2" && player2 != "3")
+    {
+        Console.WriteLine("You have to chose between the options 1, 2 Or 3");
+        player2 = Console.ReadLine();
+    }
 }
 
 while (player1hp > 0 && player2hp > 0)
@@ -53,3 +69,4 @@ while (player1hp > 0 && player2hp > 0)
 
     Console.ReadLine();
 }
+ Console.ReadLine();
