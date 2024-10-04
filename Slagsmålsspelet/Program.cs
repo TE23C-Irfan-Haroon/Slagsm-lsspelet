@@ -111,15 +111,14 @@ while (playagain == "yes")
             }
             else if (shopChoice == "4")
             {
-                Console.WriteLine("Exiting the shop");
                 break;
             }
             else
             {
                 Console.WriteLine("Please choose a valid option.");
             }
-            Console.WriteLine("Press Enter to continue...");
-            Console.ReadLine();
+            shopChoice = Console.ReadLine();
+            
         }
         continue;
     }
@@ -184,16 +183,36 @@ while (playagain == "yes")
             Console.WriteLine($"{player1} MaxDamage: {player1MaxDamage} {enemy} MaxDamage: {enemyMaxDamage}");
 
 
-            int player1damage = Random.Shared.Next(player1MinDamage, player1MaxDamage + 1);
-            enemyHP -= player1damage;
+            // Slumpa ett tal 0-4
+            // Om talet är 0: MISS
+            // Annars:
 
-            int player2damage = Random.Shared.Next(enemyMinDamage, enemyMaxDamage + 1);
-            player1hp -= player2damage;
+            int player1Attack = Random.Shared.Next(4);
+            if (player1Attack == 0)
+            {
+                Console.WriteLine($"{player1} missed the attack");
+            }
+            else 
+            {
+                int player1damage = Random.Shared.Next(player1MinDamage, player1MaxDamage + 1);
+                enemyHP -= player1damage;
+                 Console.WriteLine($"{player1} did {player1damage} damage to {enemy}");
+            }
 
-            Console.WriteLine($"{player1} did {player1damage} damage to {enemy}");
-            Console.WriteLine($"{enemy} did {player2damage} damage to {player1}");
-
-            Console.ReadLine();
+            int enemyAttack = Random.Shared.Next(4);
+            if (enemyAttack == 0)
+            {
+                Console.WriteLine($"{enemy} missed the attack");
+                Console.ReadLine();
+            }
+            else 
+            {
+                 int enemyDamage = Random.Shared.Next(enemyMinDamage, enemyMaxDamage + 1);
+                 player1hp -= enemyDamage;
+                 Console.Write($"{enemy} did {enemyDamage} damage to {player1}");
+                 Console.ReadLine();
+            }
+        
         }
 
         Console.WriteLine("------====FIGHT IS OVER====------");
