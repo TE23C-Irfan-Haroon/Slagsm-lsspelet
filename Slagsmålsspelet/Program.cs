@@ -33,14 +33,14 @@ while (playagain == "yes")
 
     int enemyHP = 100;
     int enemyMaxDamage = 10;
-    int enemyMinDamage = 2; 
+    int enemyMinDamage = 2;
 
     Console.Clear();
     Console.WriteLine($"Welcome {username}!");
     Console.WriteLine("Would you like to 'play' a match or visit the 'shop'? Type 'play' or 'shop'.");
     Console.WriteLine($"You have {coins} coins.");
     Console.WriteLine($"You have {player1hp} HP.");
-    Console.WriteLine($"Your damage range: {player1MinDamage} - {player1MaxDamage}"); 
+    Console.WriteLine($"Your damage range: {player1MinDamage} - {player1MaxDamage}");
     Console.WriteLine("TYPE 'EXIST' TO CLOSE THE GAME");
     string choice = Console.ReadLine().ToLower();
 
@@ -48,7 +48,7 @@ while (playagain == "yes")
     {
         return;
     }
-    
+
     while (choice != "play" && choice != "shop")
     {
         Console.WriteLine("Please type 'play' or 'shop'.");
@@ -96,7 +96,7 @@ while (playagain == "yes")
                     Console.WriteLine("Not enough coins.");
                 }
             }
-             else if (shopChoice == "3")
+            else if (shopChoice == "3")
             {
                 if (coins >= 5)
                 {
@@ -118,7 +118,7 @@ while (playagain == "yes")
                 Console.WriteLine("Please choose a valid option.");
             }
             shopChoice = Console.ReadLine();
-            
+
         }
         continue;
     }
@@ -175,7 +175,7 @@ while (playagain == "yes")
         }
 
         Console.Clear();
-        
+
         while (player1hp > 0 && enemyHP > 0)
         {
             Console.WriteLine("----------====NEW ROUND====----------");
@@ -183,20 +183,54 @@ while (playagain == "yes")
             Console.WriteLine($"{player1} MaxDamage: {player1MaxDamage} {enemy} MaxDamage: {enemyMaxDamage}");
 
 
-            // Slumpa ett tal 0-4
-            // Om talet är 0: MISS
-            // Annars:
+            Console.WriteLine("Choose your attack: 1) High chance to hit, lower damage OR 2) Low chance to hit, higher damage");
+            string attackChoice = Console.ReadLine();
 
-            int player1Attack = Random.Shared.Next(4);
-            if (player1Attack == 0)
+            while (attackChoice != "1" && attackChoice != "2")
             {
-                Console.WriteLine($"{player1} missed the attack");
+                Console.WriteLine("Chose between 1 or 2");
+                attackChoice = Console.ReadLine();
+
+                if (attackChoice != "1" && attackChoice != "2")
+                {
+                    Console.WriteLine("You have to chose between the options 1 or 2");
+                    attackChoice = Console.ReadLine();
+                }
             }
-            else 
+
+            if (attackChoice == "1")
             {
-                int player1damage = Random.Shared.Next(player1MinDamage, player1MaxDamage + 1);
-                enemyHP -= player1damage;
-                 Console.WriteLine($"{player1} did {player1damage} damage to {enemy}");
+
+                int player1Attack = Random.Shared.Next(5);
+                if (player1Attack == 0)
+                {
+                    Console.WriteLine($"{player1} missed the attack");
+                }
+                else
+                {
+                    int player1damage = Random.Shared.Next(player1MinDamage, player1MaxDamage + 1);
+                    enemyHP -= player1damage;
+                    Console.WriteLine($"{player1} did {player1damage} damage to {enemy}");
+                }
+
+            }
+
+            else if (attackChoice == "2")
+            {
+
+                int player1Attack = Random.Shared.Next(2);
+                if (player1Attack == 0)
+                {
+                    Console.WriteLine($"{player1} missed the attack");
+                }
+                else
+                {
+                    int player1damage = Random.Shared.Next(player1MinDamage + 8, player1MaxDamage + 11);
+                    enemyHP -= player1damage;
+                    Console.WriteLine($"{player1} did {player1damage} damage to {enemy}");
+                }
+
+
             }
 
             int enemyAttack = Random.Shared.Next(4);
@@ -205,14 +239,15 @@ while (playagain == "yes")
                 Console.WriteLine($"{enemy} missed the attack");
                 Console.ReadLine();
             }
-            else 
+            else
             {
-                 int enemyDamage = Random.Shared.Next(enemyMinDamage, enemyMaxDamage + 1);
-                 player1hp -= enemyDamage;
-                 Console.Write($"{enemy} did {enemyDamage} damage to {player1}");
-                 Console.ReadLine();
+                int enemyDamage = Random.Shared.Next(enemyMinDamage, enemyMaxDamage + 1);
+                player1hp -= enemyDamage;
+                Console.Write($"{enemy} did {enemyDamage} damage to {player1}");
+                Console.ReadLine();
             }
-        
+            Console.Clear();
+
         }
 
         Console.WriteLine("------====FIGHT IS OVER====------");
@@ -241,7 +276,7 @@ while (playagain == "yes")
 
     Console.WriteLine("Type 'Return' To Continue");
     string menu = Console.ReadLine().ToLower();
-    
+
     while (menu != "return")
     {
         menu = Console.ReadLine().ToLower();
@@ -254,8 +289,8 @@ while (playagain == "yes")
     {
         Console.Clear();
     }
-    
-   
+
+
 
 
     // Console.WriteLine("Do you want to play again? 'Yes' or 'No'");
@@ -263,11 +298,11 @@ while (playagain == "yes")
 
     // while (playagain != "yes" && playagain != "no")
     // {
-        // playagain = Console.ReadLine().ToLower();
-        // if (playagain != "yes" && playagain != "no")
-        // {
-        //     Console.WriteLine("'Yes' or 'No'");
-        // }
+    // playagain = Console.ReadLine().ToLower();
+    // if (playagain != "yes" && playagain != "no")
+    // {
+    //     Console.WriteLine("'Yes' or 'No'");
+    // }
 
     // }
 
