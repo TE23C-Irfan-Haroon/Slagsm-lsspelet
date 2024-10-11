@@ -1,9 +1,13 @@
 ﻿using System.ComponentModel;
-
+using System.Drawing;
+Console.BackgroundColor = ConsoleColor.Gray;
+Console.ForegroundColor = ConsoleColor.Black;
+Console.Clear();
 string username = "";
 
 
 Console.WriteLine("Write your username for your fighter:");
+
 
 while (username.Length < 3 || username.Length > 10)
 {
@@ -35,6 +39,10 @@ while (playagain == "yes")
     int enemyMaxDamage = 10;
     int enemyMinDamage = 2;
 
+
+    
+    Console.BackgroundColor = ConsoleColor.DarkGray;
+    Console.ForegroundColor = ConsoleColor.Black;
     Console.Clear();
     Console.WriteLine($"Welcome {username}!");
     Console.WriteLine("Would you like to 'play' a match or visit the 'shop'? Type 'play' or 'shop'.");
@@ -59,6 +67,8 @@ while (playagain == "yes")
     {
         while (true)
         {
+            Console.BackgroundColor = ConsoleColor.DarkYellow;
+            Console.ForegroundColor = ConsoleColor.White;
             Console.Clear();
             Console.WriteLine("Welcome to the Shop!");
             Console.WriteLine($"You have {coins} coins.");
@@ -125,6 +135,8 @@ while (playagain == "yes")
 
     if (choice == "play")
     {
+        Console.BackgroundColor = ConsoleColor.Red;
+        Console.ForegroundColor = ConsoleColor.Black;
         Console.Clear();
         Console.WriteLine("Choose who you want to figth:");
         Console.WriteLine("Level 1:Mario");
@@ -178,6 +190,10 @@ while (playagain == "yes")
 
         while (player1hp > 0 && enemyHP > 0)
         {
+            Console.ResetColor();
+            Console.BackgroundColor = ConsoleColor.DarkRed;
+            Console.ForegroundColor = ConsoleColor.Black;
+            Console.Clear();
             Console.WriteLine("----------====NEW ROUND====----------");
             Console.WriteLine($"{player1} HP: {player1hp} {enemy} HP: {enemyHP}");
             Console.WriteLine($"{player1} MaxDamage: {player1MaxDamage} {enemy} MaxDamage: {enemyMaxDamage}");
