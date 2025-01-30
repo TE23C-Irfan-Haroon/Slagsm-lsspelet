@@ -3,32 +3,26 @@ using System.Drawing;
 Console.BackgroundColor = ConsoleColor.Gray;
 Console.ForegroundColor = ConsoleColor.Black;
 Console.Clear();
-string username = "";
 
+Player player = new();
 
 Console.WriteLine("Write your username for your fighter:");
+player.username = Console.ReadLine();
 
 
-while (username.Length < 3 || username.Length > 10)
+while (player.username.Length < 3 || player.username.Length > 10)
 {
-    username = Console.ReadLine();
-    if (username.Length < 3)
+    player.username = Console.ReadLine();
+    if (player.username.Length < 3)
     {
         Console.WriteLine("Username cannot be less then 3 words. Please try again.");
     }
-    if (username.Length > 10)
+    if (player.username.Length > 10)
     {
         Console.WriteLine("Username cannot have more than 10 words. Please try again.");
-        username = Console.ReadLine();
+        player.username = Console.ReadLine();
     }
 }
-
-string player1 = username;
-int player1hp = 100;
-int player1MaxHP = 100;
-int player1MaxDamage = 10;
-int player1MinDamage = 2;
-int coins = 0;
 
 string playagain = "yes";
 
@@ -44,11 +38,11 @@ while (playagain == "yes")
     Console.BackgroundColor = ConsoleColor.DarkGray;
     Console.ForegroundColor = ConsoleColor.Black;
     Console.Clear();
-    Console.WriteLine($"Welcome {username}!");
+    Console.WriteLine($"Welcome {player.username}!");
     Console.WriteLine("Would you like to 'play' a match or visit the 'shop'? Type 'play' or 'shop'.");
-    Console.WriteLine($"You have {coins} coins.");
-    Console.WriteLine($"You have {player1hp} HP.");
-    Console.WriteLine($"Your damage range: {player1MinDamage} - {player1MaxDamage}");
+    Console.WriteLine($"You have {player.coins} coins.");
+    Console.WriteLine($"You have {player.hp} HP.");
+    Console.WriteLine($"Your damage range: {player.MinDamage} - {player.MaxDamage}");
     Console.WriteLine("TYPE 'EXIST' TO CLOSE THE GAME");
     string choice = Console.ReadLine().ToLower();
 
@@ -71,7 +65,7 @@ while (playagain == "yes")
             Console.ForegroundColor = ConsoleColor.White;
             Console.Clear();
             Console.WriteLine("Welcome to the Shop!");
-            Console.WriteLine($"You have {coins} coins.");
+            Console.WriteLine($"You have {player.coins} coins.");
             Console.WriteLine("1. Upgrade Armor (Increase HP by 20)  Cost: 15 coins");
             Console.WriteLine("2. Upgrade Weapon (Increase MaxDamage by 10)  Cost: 20 coins");
             Console.WriteLine("3. Increase Minimum Damage by 2  Cost: 5 coins");
@@ -81,12 +75,12 @@ while (playagain == "yes")
 
             if (shopChoice == "1")
             {
-                if (coins >= 15)
+                if (player.coins >= 15)
                 {
-                    player1MaxHP += 20;
-                    player1hp = player1MaxHP;
-                    coins -= 15;
-                    Console.WriteLine($"Your HP is now {player1hp}/{player1MaxHP}. You have {coins} coins left.");
+                    player.hp += 20;
+                    player.MaxHP = player.hp;
+                    player.coins -= 15;
+                    Console.WriteLine($"Your HP is now {player.hp}/{player.MaxHP}. You have {player.coins} coins left.");
                 }
                 else
                 {
@@ -95,11 +89,11 @@ while (playagain == "yes")
             }
             else if (shopChoice == "2")
             {
-                if (coins >= 20)
+                if (player.coins >= 20)
                 {
-                    player1MaxDamage += 10;
-                    coins -= 20;
-                    Console.WriteLine($"Your maximum damage is now {player1MaxDamage}. You have {coins} coins left.");
+                    player.MaxDamage += 10;
+                    player.coins -= 20;
+                    Console.WriteLine($"Your maximum damage is now {player.MaxDamage}. You have {player.coins} coins left.");
                 }
                 else
                 {
@@ -108,11 +102,11 @@ while (playagain == "yes")
             }
             else if (shopChoice == "3")
             {
-                if (coins >= 5)
+                if (player.coins >= 5)
                 {
-                    player1MinDamage += 2;
-                    coins -= 5;
-                    Console.WriteLine($"Your minimum damage is now {player1MinDamage}. You have {coins} coins left.");
+                    player.MinDamage += 2;
+                    player.coins -= 5;
+                    Console.WriteLine($"Your minimum damage is now {player.MinDamage}. You have {player.coins} coins left.");
                 }
                 else
                 {
@@ -188,15 +182,15 @@ while (playagain == "yes")
 
         Console.Clear();
 
-        while (player1hp > 0 && enemyHP > 0)
+        while (player.hp > 0 && enemyHP > 0)
         {
             Console.ResetColor();
             Console.BackgroundColor = ConsoleColor.DarkRed;
             Console.ForegroundColor = ConsoleColor.Black;
             Console.Clear();
             Console.WriteLine("----------====NEW ROUND====----------");
-            Console.WriteLine($"{player1} HP: {player1hp} {enemy} HP: {enemyHP}");
-            Console.WriteLine($"{player1} MaxDamage: {player1MaxDamage} {enemy} MaxDamage: {enemyMaxDamage}");
+            Console.WriteLine($"{player.username} HP: {player.hp} {enemy} HP: {enemyHP}");
+            Console.WriteLine($"{player.username} MaxDamage: {player.MaxDamage} {enemy} MaxDamage: {enemyMaxDamage}");
 
 
             Console.WriteLine("Choose your attack: 1) High chance to hit, lower damage OR 2) Low chance to hit, higher damage");
@@ -220,13 +214,13 @@ while (playagain == "yes")
                 int player1Attack = Random.Shared.Next(5);
                 if (player1Attack == 0)
                 {
-                    Console.WriteLine($"{player1} missed the attack");
+                    Console.WriteLine($"{player.username} missed the attack");
                 }
                 else
                 {
-                    int player1damage = Random.Shared.Next(player1MinDamage, player1MaxDamage + 1);
+                    int player1damage = Random.Shared.Next(player.MinDamage, player.MaxDamage + 1);
                     enemyHP -= player1damage;
-                    Console.WriteLine($"{player1} did {player1damage} damage to {enemy}");
+                    Console.WriteLine($"{player.username} did {player1damage} damage to {enemy}");
                 }
 
             }
@@ -237,13 +231,13 @@ while (playagain == "yes")
                 int player1Attack = Random.Shared.Next(2);
                 if (player1Attack == 0)
                 {
-                    Console.WriteLine($"{player1} missed the attack");
+                    Console.WriteLine($"{player.username} missed the attack");
                 }
                 else
                 {
-                    int player1damage = Random.Shared.Next(player1MinDamage + 8, player1MaxDamage + 11);
+                    int player1damage = Random.Shared.Next(player.MinDamage + 8, player.MaxDamage + 11);
                     enemyHP -= player1damage;
-                    Console.WriteLine($"{player1} did {player1damage} damage to {enemy}");
+                    Console.WriteLine($"{player.username} did {player1damage} damage to {enemy}");
                 }
 
 
@@ -258,8 +252,8 @@ while (playagain == "yes")
             else
             {
                 int enemyDamage = Random.Shared.Next(enemyMinDamage, enemyMaxDamage + 1);
-                player1hp -= enemyDamage;
-                Console.Write($"{enemy} did {enemyDamage} damage to {player1}");
+                player.hp -= enemyDamage;
+                Console.Write($"{enemy} did {enemyDamage} damage to {player.username}");
                 Console.ReadLine();
             }
             Console.Clear();
@@ -268,26 +262,26 @@ while (playagain == "yes")
 
         Console.WriteLine("------====FIGHT IS OVER====------");
 
-        if (player1hp <= 0 && enemyHP <= 0)
+        if (player.hp <= 0 && enemyHP <= 0)
         {
             Console.WriteLine("Round Drawn");
-            coins += coinRewardDraw;
-            Console.WriteLine($"You earned {coinRewardDraw} coins! You now have {coins} coins.");
+            player.coins += coinRewardDraw;
+            Console.WriteLine($"You earned {coinRewardDraw} coins! You now have {player.coins} coins.");
         }
-        else if (player1hp <= 0)
+        else if (player.hp <= 0)
         {
             Console.WriteLine($"{enemy} WON!");
-            coins += coinRewardLoss;
-            Console.WriteLine($"You earned {coinRewardLoss} coins! You now have {coins} coins.");
+            player.coins += coinRewardLoss;
+            Console.WriteLine($"You earned {coinRewardLoss} coins! You now have {player.coins} coins.");
         }
         else
         {
-            Console.WriteLine($"{player1} WON!");
-            coins += coinReward;
-            Console.WriteLine($"You earned {coinReward} coins! You now have {coins} coins.");
+            Console.WriteLine($"{player.username} WON!");
+            player.coins += coinReward;
+            Console.WriteLine($"You earned {coinReward} coins! You now have {player.coins} coins.");
         }
 
-        player1hp = player1MaxHP;
+        player.hp = player.MaxHP;
     }
 
     Console.WriteLine("Type 'Return' To Continue");
