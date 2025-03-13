@@ -1,86 +1,9 @@
 
 public class Utils
 {
-    public static void Shop(Player player)
+    public static void Attack(Player attacker, Enemy defender, bool strongAttack)
     {
-        while (true)
-        {
-            Console.BackgroundColor = ConsoleColor.DarkYellow;
-            Console.ForegroundColor = ConsoleColor.White;
-            Console.Clear();
-            Console.WriteLine("Welcome to the Shop!");
-            Console.WriteLine($"You have {player.coins} coins.");
-            Console.WriteLine("1. Upgrade Armor (Increase HP by 20)  Cost: 15 coins");
-            Console.WriteLine("2. Upgrade Sword Damage (Increase MaxDamage by 10)  Cost: 20 coins");
-            Console.WriteLine("3. Upgrade Sword Reliablity (Increase MinDamage by 2)  Cost: 5 coins");
-            Console.WriteLine("4. Exit Shop");
-            Console.WriteLine("Choose an option: 1, 2, 3, or 4");
-
-            int shopChoice;
-            while (!int.TryParse(Console.ReadLine(), out shopChoice) || shopChoice < 1 || shopChoice > 4)
-            {
-                Console.WriteLine("Invalid input. Please Choose a valid option");
-            }
-
-            if (shopChoice == 1)
-            {
-                if (player.coins >= 15)
-                {
-                    player.hp += 20;
-                    player.MaxHP = player.hp;
-                    player.coins -= 15;
-                    Console.WriteLine($"Your HP is now {player.hp}/{player.MaxHP}. You have {player.coins} coins left.");
-                }
-                else
-                {
-                    Console.WriteLine("You don't have enough coins for this purchase.");
-                }
-                Console.WriteLine("Press Enter to continue...");
-                Console.ReadLine(); // Väntar på input så spelaren ser texten
-            }
-            else if (shopChoice == 2)
-            {
-                if (player.coins >= 20)
-                {
-                    player.MaxDamage += 10;
-                    player.coins -= 20;
-                    Console.WriteLine($"Your maximum damage is now {player.MaxDamage}. You have {player.coins} coins left.");
-                }
-                else
-                {
-                    Console.WriteLine("You don't have enough coins for this purchase.");
-                }
-                Console.WriteLine("Press Enter to continue...");
-                Console.ReadLine(); // Väntar på input så spelaren ser texten
-            }
-            else if (shopChoice == 3)
-            {
-                if (player.coins >= 5)
-                {
-                    player.MinDamage += 2;
-                    player.coins -= 5;
-                    Console.WriteLine($"Your minimum damage is now {player.MinDamage}. You have {player.coins} coins left.");
-                }
-                else
-                {
-                    Console.WriteLine("You don't have enough coins for this purchase.");
-                }
-                Console.WriteLine("Press Enter to continue...");
-                Console.ReadLine();
-            }
-
-            if (shopChoice == 4)
-            {
-                break;
-            }
-
-        }
-    }
-
-
-    public static void Attack(Player attacker, Enemy defender, bool strongAttack) 
-    {
-          // Metod för spelarens attack
+        // Metod för spelarens attack
         if (strongAttack)
         {
             if (Random.Shared.Next(2) != 0)
@@ -111,7 +34,7 @@ public class Utils
 
     public static void Attack(Enemy attacker, Player defender, bool strongAttack)
     {
-          // Metod för enemies attack 
+        // Metod för enemies attack 
         if (Random.Shared.Next(5) != 0)
         {
             int damage = Random.Shared.Next(attacker.MinDamage, attacker.MaxDamage + 1);
@@ -198,4 +121,189 @@ public class Utils
         player.hp = player.MaxHP;
     }
 
+
+    public static void Login(Player player)
+    {
+
+        Console.WriteLine("Write your username for your fighter:");
+
+        while (player.username.Length < 3 || player.username.Length > 10)
+        {
+            player.username = Console.ReadLine();
+            if (player.username.Length < 3)
+            {
+                Console.Clear();
+                Console.WriteLine("Write your username for your fighter:");
+                Console.WriteLine("Username cannot be less then 3 words. Please try again.");
+            }
+            else if (player.username.Length > 10)
+            {
+                Console.Clear();
+                Console.WriteLine("Write your username for your fighter:");
+                Console.WriteLine("Username cannot have more than 10 words. Please try again.");
+            }
+
+        }
+    }
+
+    public static string Menu(Player player)
+    {
+        string choice = "";
+        while (choice != "play" && choice != "shop")
+        {
+            Console.Clear();
+            Console.WriteLine($"Welcome {player.username}!");
+            Console.WriteLine("Would you like to 'play' a match or visit the 'shop'? Type 'play' or 'shop'.");
+            Console.WriteLine($"You have {player.coins} coins.");
+            Console.WriteLine($"You have {player.hp} HP.");
+            Console.WriteLine($"Your damage range: {player.MinDamage} - {player.MaxDamage}");
+            Console.WriteLine("TYPE 'EXIT' TO CLOSE THE GAME");
+            Console.WriteLine("Please type 'play' or 'shop'.");
+            choice = Console.ReadLine().ToLower();
+
+            if (choice == "exit")
+            {
+                return "";
+            }
+        }
+
+        return choice;
+
+    }
+
+    public static void PlayMenu(Player player)
+    {
+        // List is used instead of an array because if we want to add more enemies its easier and more effective to use a list
+        List<Enemy> enemies = new List<Enemy>
+        {
+             new Enemy { name = "Mario", MaxDamage = 10, MinDamage = 2, hp = 100 },
+             new Enemy { name = "Ironman", MaxDamage = 20, MinDamage = 5, hp = 150 },
+             new Enemy { name = "Kratos", MaxDamage = 40, MinDamage = 10, hp = 200 }
+        };
+
+        Console.BackgroundColor = ConsoleColor.Red;
+        Console.ForegroundColor = ConsoleColor.Black;
+        Console.Clear();
+        Console.WriteLine("Choose who you want to fight:");
+        for (int i = 0; i < enemies.Count; i++)
+        {
+            Console.WriteLine($"Level {i + 1}: {enemies[i].name}");
+        }
+        Console.WriteLine("Choose between 1, 2, or 3");
+
+        string level = Console.ReadLine().ToLower();
+
+        while (level != "1" && level != "2" && level != "3")
+        {
+            Console.WriteLine("Choose between 1, 2, or 3");
+            level = Console.ReadLine();
+        }
+
+        int enemyNum = int.Parse(level) - 1;
+        Enemy currentEnemy = enemies[enemyNum]; // Get enemy from the list
+
+        int[] coinRewards = { 15, 30, 50 }; // Rewards for levels 1, 2, 3
+        int coinReward = coinRewards[enemyNum];
+        int coinRewardLoss = 5;
+        int coinRewardDraw = 10;
+
+        Utils.Fight(player, currentEnemy, coinReward, coinRewardLoss, coinRewardDraw);
+    }
+
+ public static void Shop(Player player)
+    {
+        while (true)
+        {
+            int shopChoice = Utils.ShopMenu(player);
+
+            if (shopChoice == 1)
+            {
+               Utils.ShopHp(player);
+            }
+            else if (shopChoice == 2)
+            {
+                Utils.ShopMaxDamage(player);
+            }
+            else if (shopChoice == 3)
+            {
+               Utils.ShopMinDamage(player);
+            }
+
+            if (shopChoice == 4)
+            {
+                break;
+            }
+
+        }
+    }
+    public static int ShopMenu(Player player)
+    {
+        Console.BackgroundColor = ConsoleColor.DarkYellow;
+        Console.ForegroundColor = ConsoleColor.White;
+        Console.Clear();
+        Console.WriteLine("Welcome to the Shop!");
+        Console.WriteLine($"You have {player.coins} coins.");
+        Console.WriteLine("1. Upgrade Armor (Increase HP by 20)  Cost: 15 coins");
+        Console.WriteLine("2. Upgrade Sword Damage (Increase MaxDamage by 10)  Cost: 20 coins");
+        Console.WriteLine("3. Upgrade Sword Reliablity (Increase MinDamage by 2)  Cost: 5 coins");
+        Console.WriteLine("4. Exit Shop");
+        Console.WriteLine("Choose an option: 1, 2, 3, or 4");
+
+        int shopChoice;
+        while (!int.TryParse(Console.ReadLine(), out shopChoice) || shopChoice < 1 || shopChoice > 4)
+        {
+            Console.WriteLine("Invalid input. Please Choose a valid option");
+        }
+
+        return shopChoice;
+    }
+
+public static void ShopHp(Player player)
+{
+   if (player.coins >= 15)
+                {
+                    player.hp += 20;
+                    player.MaxHP = player.hp;
+                    player.coins -= 15;
+                    Console.WriteLine($"Your HP is now {player.hp}/{player.MaxHP}. You have {player.coins} coins left.");
+                }
+                else
+                {
+                    Console.WriteLine("You don't have enough coins for this purchase.");
+                }
+                Console.WriteLine("Press Enter to continue...");
+                Console.ReadLine();
 }
+public static void ShopMaxDamage(Player player)
+{
+  if (player.coins >= 20)
+                {
+                    player.MaxDamage += 10;
+                    player.coins -= 20;
+                    Console.WriteLine($"Your maximum damage is now {player.MaxDamage}. You have {player.coins} coins left.");
+                }
+                else
+                {
+                    Console.WriteLine("You don't have enough coins for this purchase.");
+                }
+                Console.WriteLine("Press Enter to continue...");
+                Console.ReadLine();
+}
+
+public static void ShopMinDamage(Player player)
+{
+   if (player.coins >= 5)
+                {
+                    player.MinDamage += 2;
+                    player.coins -= 5;
+                    Console.WriteLine($"Your minimum damage is now {player.MinDamage}. You have {player.coins} coins left.");
+                }
+                else
+                {
+                    Console.WriteLine("You don't have enough coins for this purchase.");
+                }
+                Console.WriteLine("Press Enter to continue...");
+                Console.ReadLine();
+}
+}
+
