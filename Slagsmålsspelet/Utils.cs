@@ -1,4 +1,6 @@
 
+using System.Threading.Tasks.Dataflow;
+
 public class Utils
 {
     public static void Attack(Player attacker, Enemy defender, bool strongAttack)
@@ -88,7 +90,7 @@ public class Utils
     }
 
 
-    public static void Fight(Player player, Enemy currentEnemy, int coinReward, int coinRewardLoss, int coinRewardDraw)
+    public static bool Fight(Player player, Enemy currentEnemy, int coinReward, int coinRewardLoss, int coinRewardDraw)
     {
         Console.Clear();
 
@@ -98,7 +100,7 @@ public class Utils
         }
 
         Console.WriteLine("------==== FIGHT IS OVER ====------");
-
+        bool won = false; 
         if (player.hp <= 0 && currentEnemy.hp <= 0)
         {
             Console.WriteLine("Round Drawn");
@@ -116,9 +118,11 @@ public class Utils
             Console.WriteLine($"{player.username} WON!");
             player.coins += coinReward;
             Console.WriteLine($"You earned {coinReward} coins! You now have {player.coins} coins.");
+            won = true;
         }
 
         player.hp = player.MaxHP;
+        return won;
     }
 
 
@@ -207,7 +211,12 @@ public class Utils
         int coinRewardLoss = 5;
         int coinRewardDraw = 10;
 
-        Utils.Fight(player, currentEnemy, coinReward, coinRewardLoss, coinRewardDraw);
+        bool won = Utils.Fight(player, currentEnemy, coinReward, coinRewardLoss, coinRewardDraw);
+
+        if (won == true)
+        {
+            Console.WriteLine("CONGRATS YOU WON");
+        }
     }
 
  public static void Shop(Player player)
