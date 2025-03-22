@@ -1,5 +1,6 @@
 public class Player
 {
+    // Klass som representerar spelaren och dess egenskaper
     public int coins = 0;
     public int hp = 100;
     public int MaxHP = 100;

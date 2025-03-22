@@ -8,7 +8,7 @@ public class Utils
         // Metod för spelarens attack
         if (strongAttack)
         {
-            if (Random.Shared.Next(2) != 0)
+            if (Random.Shared.Next(2) != 0) // 50% chans att träffa
             {
                 int damage = Random.Shared.Next(attacker.MinDamage + 8, attacker.MaxDamage + 11);
                 defender.hp -= damage;
@@ -21,7 +21,7 @@ public class Utils
         }
         else
         {
-            if (Random.Shared.Next(5) != 0)
+            if (Random.Shared.Next(5) != 0)  // 80% chans att träffa
             {
                 int damage = Random.Shared.Next(attacker.MinDamage, attacker.MaxDamage + 1);
                 defender.hp -= damage;
@@ -37,7 +37,7 @@ public class Utils
     public static void Attack(Enemy attacker, Player defender, bool strongAttack)
     {
         // Metod för enemies attack 
-        if (Random.Shared.Next(5) != 0)
+        if (Random.Shared.Next(5) != 0) // 80% chans att träffa
         {
             int damage = Random.Shared.Next(attacker.MinDamage, attacker.MaxDamage + 1);
             defender.hp -= damage;
@@ -56,10 +56,13 @@ public class Utils
         Console.BackgroundColor = ConsoleColor.DarkRed;
         Console.ForegroundColor = ConsoleColor.Black;
         Console.Clear();
+
+         // En ny runda i striden startas
         Console.WriteLine("----------==== NEW ROUND ====----------");
         Console.WriteLine($"{player.username} HP: {player.hp} | {enemy.name} HP: {enemy.hp}");
         Console.WriteLine($"{player.username} MaxDamage: {player.MaxDamage} | {enemy.name} MaxDamage: {enemy.MaxDamage}");
-
+        
+        // Spelaren väljer attack
         Console.WriteLine("Choose your attack: 1) High chance to hit, lower damage OR 2) Low chance to hit, higher damage");
         string attackChoice = Console.ReadLine();
 
@@ -79,8 +82,10 @@ public class Utils
             strongAttack = false;
         }
 
+         // Spelaren attackerar först
         Attack(player, enemy, strongAttack);
 
+        // Fienden attackerar om den fortfarande lever
         if (enemy.hp > 0)
         {
             Attack(enemy, player, false);
@@ -92,6 +97,7 @@ public class Utils
 
     public static bool Fight(Player player, Enemy currentEnemy, int coinReward, int coinRewardLoss, int coinRewardDraw)
     {
+        // fight mellan spelaren och fiende
         Console.Clear();
 
         while (player.hp > 0 && currentEnemy.hp > 0)
@@ -101,6 +107,8 @@ public class Utils
 
         Console.WriteLine("------==== FIGHT IS OVER ====------");
         bool won = false; 
+
+        // Avgör resultatet av striden
         if (player.hp <= 0 && currentEnemy.hp <= 0)
         {
             Console.WriteLine("Round Drawn");
@@ -121,16 +129,16 @@ public class Utils
             won = true;
         }
 
-        player.hp = player.MaxHP;
+        player.hp = player.MaxHP; // Återställ spelarens HP
         return won;
     }
 
 
     public static void Login(Player player)
     {
-
+        // Spelaren skriver in sitt användarnamn
         Console.WriteLine("Write your username for your fighter:");
-
+        
         while (player.username.Length < 3 || player.username.Length > 10)
         {
             player.username = Console.ReadLine();
@@ -152,6 +160,7 @@ public class Utils
 
     public static string Menu(Player player)
     {
+        // Huvudmenyn
         string choice = "";
         while (choice != "play" && choice != "shop")
         {
@@ -177,6 +186,7 @@ public class Utils
 
     public static void PlayMenu(Player player)
     {
+        // Spelaren väljer en fiende att slåss mot
         // List is used instead of an array because if we want to add more enemies its easier and more effective to use a list
         List<Enemy> enemies = new List<Enemy>
         {
@@ -221,6 +231,7 @@ public class Utils
 
  public static void Shop(Player player)
     {
+        // shop där man kan köpa uppgraderingar
         while (true)
         {
             int shopChoice = Utils.ShopMenu(player);
@@ -247,6 +258,7 @@ public class Utils
     }
     public static int ShopMenu(Player player)
     {
+        // Menyn för shopen
         Console.BackgroundColor = ConsoleColor.DarkYellow;
         Console.ForegroundColor = ConsoleColor.White;
         Console.Clear();
@@ -269,6 +281,7 @@ public class Utils
 
 public static void ShopHp(Player player)
 {
+    // Metod för att uppgradera spelarens HP om de har tillräckligt med mynt
    if (player.coins >= 15)
                 {
                     player.hp += 20;
@@ -285,6 +298,7 @@ public static void ShopHp(Player player)
 }
 public static void ShopMaxDamage(Player player)
 {
+    // Metod för att uppgradera spelarens maxDamage om de har tillräckligt med mynt
   if (player.coins >= 20)
                 {
                     player.MaxDamage += 10;
@@ -301,6 +315,7 @@ public static void ShopMaxDamage(Player player)
 
 public static void ShopMinDamage(Player player)
 {
+    // Metod för att uppgradera spelarens minDamage om de har tillräckligt med mynt
    if (player.coins >= 5)
                 {
                     player.MinDamage += 2;
